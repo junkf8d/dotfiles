@@ -14,7 +14,7 @@ if [ -z $GITHUB_TOKEN ]; then
   exit 1
 fi
 
-if $(get_flag ".github_ssh_key_added"); then
+if [ -n $(get_flag ".github_ssh_key_added") ]; then
   log "GitHubにSSHキーを追加済みなのでスキップ"
   exit
 fi

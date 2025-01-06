@@ -17,14 +17,22 @@ home(){
 }
 
 get_flag(){
-    jq -r $1 $ROOT/.flags.json
+    if [ -e $ROOT/.flags.json ]; then
+        jq -r $1 $ROOT/.flags.json
+    else
+        echo "{}" > $ROOT/.flags.json
+    fi
 }
 
 set_flag(){
-    result=$(jq "$1 |= \"$2\"" $ROOT/.flags.json)
-    if [ $? -eq 0 ]; then
-        echo $result | jq "." > $ROOT/.flags.json
+    if [ -e $ROOT/.flags.json ]; then
+        result=$(jq "$1 |= \"$2\"" $ROOT/.flags.json)
+        if [ $? -eq 0 ]; then
+            echo $result | jq "." > $ROOT/.flags.json
+        else
+            echo " * json の書き換えに失敗しました: $1 = $2"
+        fi
     else
-        echo " * json の書き換えに失敗しました: $1 = $2"
+        echo "{}" > $ROOT/.flags.json
     fi
 }
