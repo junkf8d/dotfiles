@@ -1,6 +1,8 @@
 chmod +x $HOME/dotfiles/.env
 source $HOME/dotfiles/.env
 source $HOME/dotfiles/_common.sh
+$HOME/dotfiles/git.sh
+$HOME/dotfiles/ssh-keygen.sh
 
 if [ -z $GITHUB_TOKEN ]; then
   echo ".env に GITHUB_TOKEN が設定されてません。"
@@ -12,7 +14,9 @@ title="$(hostname) $(grep '^PRETTY_NAME=' /etc/os-release | grep -oP '(?<=").+(?
 file=$(meta .ssh.file | sed "s|~|$HOME|").pub
 
 curl -u $user --data "{\"title\":\"$title\",\"key\":\"$(cat $file)\"}" https://api.github.com/user/keys
+#curl -u $user https://api.github.com/user/keys
 
+# ghでやる方法はとりあえずやらない
 # if ! type -p gh >/dev/null; then
 #     sudo mkdir -p -m 755 /etc/apt/keyrings
 #     wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null
