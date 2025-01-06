@@ -14,8 +14,8 @@ fi
 
 
 # 必須パッケージをインストール
-sudo apt update
-sudo apt upgrade -y
+# sudo apt update
+# sudo apt upgrade -y
 sudo apt install jq wl-clipboard
 
 echo " * Starting setup for WSL Ubuntu..."
