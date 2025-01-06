@@ -18,14 +18,14 @@ home(){
 
 get_flag(){
     if [ -e $ROOT/.flags.json ]; then
-        jq -r $1 $ROOT/.flags.json
+        jq -r "$1" $ROOT/.flags.json
     else
         echo "{}" > $ROOT/.flags.json
     fi
 }
 
 set_flag(){
-    if [ -e $ROOT/.flags.json ]; then
+    if [ -e "$ROOT/.flags.json" ]; then
         result=$(jq "$1 |= \"$2\"" $ROOT/.flags.json)
         if [ $? -eq 0 ]; then
             echo $result | jq "." > $ROOT/.flags.json
