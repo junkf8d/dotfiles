@@ -1,0 +1,17 @@
+{
+    "git": {
+        "user": {
+            "name": "junkf8d",
+            "email": "junkf8d@gmail.com"
+        },
+        "core": {
+            "editor": "vim"
+        }
+    },
+    "ssh": {
+        "pub": "~/.ssh/id_ed25519.pub"
+    },
+    "meta": {
+        "prompt": " * "
+    }
+}
