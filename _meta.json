@@ -9,7 +9,7 @@
         }
     },
     "ssh": {
-        "pub": "~/.ssh/id_ed25519.pub"
+        "file": "~/.ssh/id_ed25519"
     },
     "meta": {
         "prompt": " * "
