@@ -1,22 +1,29 @@
+# こんな感じ頑張ったらsourceしても使えた
+# DIR=$(dirname $(readlink -f ${BASH_SOURCE[0]}))
+# けどもう疲れたから.gitがあるフォルダをルートフォルダとする
+ROOT=$(git rev-parse --show-toplevel)
+
 meta() {
-    jq -r $1 $HOME/dotfiles/_meta.json
+    jq -r $1 $ROOT/_meta.json
 }
 
 log() {
     echo "$(meta '.meta.prompt')$1"
 }
 
+home(){
+    # sudoするとHOMEが使えないので
+    echo $(echo $ROOT | grep -Po "/home/[^/]+")
+}
+
 get_flag(){
-    jq -r $1 $HOME/dotfiles/.flags.json
+    jq -r $1 $ROOT/.flags.json
 }
 
 set_flag(){
-    # これでも出来るけどエラー出ると全部消えるからやらない
-    #cat <<< $(jq "$1 |= \"$2\"" $HOME/dotfiles/.flags.json) > $HOME/dotfiles/.flags.json
-
-    result=$(jq "$1 |= \"$2\"" $HOME/dotfiles/.flags.json)
+    result=$(jq "$1 |= \"$2\"" $ROOT/.flags.json)
     if [ $? -eq 0 ]; then
-        echo $result > $HOME/dotfiles/.flags.json
+        echo $result | jq "." > $ROOT/.flags.json
     else
         echo " * json の書き換えに失敗しました: $1 = $2"
     fi

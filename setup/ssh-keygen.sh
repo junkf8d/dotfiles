@@ -1,6 +1,8 @@
+ROOT=$(git rev-parse --show-toplevel)
+source $ROOT/_common.sh
 
-source $HOME/dotfiles/_common.sh
-file=$(meta .ssh.file | sed "s|~|$HOME|")
+
+file=$(meta .ssh.file | sed "s|~|$(home)|")
 
 # SSHキーの生成
 if [ ! -f $file ]; then

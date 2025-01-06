@@ -1,4 +1,5 @@
-source $HOME/dotfiles/_common.sh
+ROOT=$(git rev-parse --show-toplevel)
+source $ROOT/_common.sh
 
 if ! grep -qr "git-core/ppa" /etc/apt/sources.list /etc/apt/sources.list.d/ 2>/dev/null; then
   sudo add-apt-repository ppa:git-core/ppa -y

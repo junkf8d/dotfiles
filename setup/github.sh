@@ -1,12 +1,22 @@
-chmod +x $HOME/dotfiles/.env
-source $HOME/dotfiles/.env
-source $HOME/dotfiles/_common.sh
-$HOME/dotfiles/git.sh
-$HOME/dotfiles/ssh-keygen.sh
+ROOT=$(git rev-parse --show-toplevel)
+source $ROOT/_common.sh
+
+chmod +x $ROOT/.env
+source $ROOT/.env
+
+$ROOT/setup/git.sh
+$ROOT/setup/ssh-keygen.sh
+
+HOME=$(echo $ROOT | grep -Po "/home/[^/]+")
 
 if [ -z $GITHUB_TOKEN ]; then
   echo ".env に GITHUB_TOKEN が設定されてません。"
   exit 1
+fi
+
+if $(get_flag ".github_ssh_key_added"); then
+  log "GitHubにSSHキーを追加済みなのでスキップ"
+  exit
 fi
 
 user="$(git config --global user.email):$GITHUB_TOKEN"
@@ -14,6 +24,14 @@ title="$(hostname) $(grep '^PRETTY_NAME=' /etc/os-release | grep -oP '(?<=").+(?
 file=$(meta .ssh.file | sed "s|~|$HOME|").pub
 
 curl -u $user --data "{\"title\":\"$title\",\"key\":\"$(cat $file)\"}" https://api.github.com/user/keys
+
+if [ $? -eq 0 ]; then
+  set_flag ".github_ssh_key_added" "true"
+else
+  log "GitHubにSSHキーを追加しようとしたけど何か失敗しました"
+fi
+
+
 #curl -u $user https://api.github.com/user/keys
 
 # ghでやる方法はとりあえずやらない
